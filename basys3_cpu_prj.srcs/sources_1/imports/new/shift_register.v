@@ -79,6 +79,7 @@ module shift_register_PIPO_p #(
     input clk, reset_p,
     input [N-1:0] d,
     input wr_en, rd_en, //wr_en 1 : 데이터 쓰기, rd_en 1 : 데이터 읽기
+    output [N-1:0] register_data,
     output [N-1:0] q
     );
     
@@ -90,5 +91,7 @@ module shift_register_PIPO_p #(
     
     assign q = rd_en ? pipo_reg : 'bz; // rd_en 1일때만 출력, 0일때는 z출력
                                        // 'bz = zzzzzzzz... 모두 z일때 비트수 생략가능
+
+    assign register_data = pipo_reg; // alu를 위한 상시출력
 endmodule
 
