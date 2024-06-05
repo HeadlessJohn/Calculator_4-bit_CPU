@@ -164,7 +164,7 @@ module full_add_sub_s(
 //    | : or 
 //    ~ : not
     
-    full_adder_structural fa0 (.A(A[0]), .B(B[0]^s), .sum(sum[0]), .Cin(s), .carry(cout_0));
+    full_adder_structural fa0 (.A(A[0]), .B(B[0]^s), .sum(sum[0]), .Cin(s),      .carry(cout_0));
     full_adder_structural fa1 (.A(A[1]), .B(B[1]^s), .sum(sum[1]), .Cin(cout_0), .carry(cout_1));
     full_adder_structural fa2 (.A(A[2]), .B(B[2]^s), .sum(sum[2]), .Cin(cout_1), .carry(cout_2));
     full_adder_structural fa3 (.A(A[3]), .B(B[3]^s), .sum(sum[3]), .Cin(cout_2), .carry(carry));
@@ -183,8 +183,8 @@ module full_add_sub_4bit(
     
     assign temp = s ? A - B : A + B; //  S? ???? s=A-B,  S? ??? ?? s=A+B
     assign sum = temp[3:0]; //??4??? sum
-    assign carry = ~temp[4]; //??1??? carry? ??
-
+    assign carry = s ? ~temp[4] : temp[4]; //??1??? carry? ??
+    //carry 1이면 양수, 0이면 음수
     //??? ???? ??? ?? 1? ???? ??? ??
     //ex) 1111 -> 8bit? ???? -> 00001111 -> ??? ????
     //ex) 1111 -> 8bit? ???? -> 11111111 -> -1? ???? ??    
@@ -204,4 +204,28 @@ module tb_half_adder;
         #10 a=0; b=0;
         #10 $finish;
     end
+endmodule
+
+
+module FullAdder(
+    input a, b, cin,
+    output sum, cout
+);
+    assign {cout, sum} = a + b + cin;
+endmodule
+
+module FourBitAdderSubtractor(
+    input [3:0] a, b,
+    input sub,
+    output [3:0] sum,
+    output cout, v
+);
+    wire [3:0] b_sub;
+    wire [3:0] c;
+    assign b_sub = sub ? ~b : b;
+    FullAdder fa0 (.a(a[0]), .b(b_sub[0]), .cin(sub), .sum(sum[0]), .cout(c[0]));
+    FullAdder fa1 (.a(a[1]), .b(b_sub[1]), .cin(c[0]), .sum(sum[1]), .cout(c[1]));
+    FullAdder fa2 (.a(a[2]), .b(b_sub[2]), .cin(c[1]), .sum(sum[2]), .cout(c[2]));
+    FullAdder fa3 (.a(a[3]), .b(b_sub[3]), .cin(c[2]), .sum(sum[3]), .cout(cout));
+    assign v = sub ? cout : ~cout;
 endmodule
