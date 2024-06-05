@@ -34,7 +34,7 @@ module block_alu_acc(
     wire [3:0] acc_high_data2bus;
 
     wire [1:0] acc_high_select;
-    wire cout;
+    wire cout; // cout이 1이면 뺄수 있음
     assign acc_high_select[0] = (op_mul | op_div) ?  ((op_mul & acc_low_data[0]) | (op_div & cout)) : acc_high_select_in[0]; // 곱셈 연산일때, 최하위 비트가 1이면 11을 넣어 데이터 로드
     assign acc_high_select[1] = (op_mul | op_div) ?  ((op_mul & acc_low_data[0]) | (op_div & cout)) : acc_high_select_in[1];
 
