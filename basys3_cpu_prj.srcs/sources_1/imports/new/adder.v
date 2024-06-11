@@ -10,7 +10,37 @@ module half_adder_structural(  // ????
     and(carry, A, B); // carry = A*B
     
 endmodule
-    
+
+module half_adder_N_bit #(parameter N = 8)(
+    input inc,
+    input [N-1:0] load_data,
+    output [N-1:0] sum
+    );
+
+    wire [N-1:0] carry_out;
+
+    half_adder_dataflow ha0(
+        .A     (inc),
+        .B     (load_data[0]),
+        .sum   (sum[0]),
+        .carry (carry_out[0])
+    );
+
+    genvar i;
+    generate
+        for(i=1; i<N; i=i+1) begin : hagen
+            half_adder_dataflow ha(
+                .A     (carry_out[i-1]),
+                .B     (load_data[i]),
+                .sum   (sum[i]),
+                .carry (carry_out[i])
+            );
+        end
+    endgenerate
+
+
+endmodule
+
     
 // ??? ???
 module half_adder_behavioral(
@@ -204,28 +234,4 @@ module tb_half_adder;
         #10 a=0; b=0;
         #10 $finish;
     end
-endmodule
-
-
-module FullAdder(
-    input a, b, cin,
-    output sum, cout
-);
-    assign {cout, sum} = a + b + cin;
-endmodule
-
-module FourBitAdderSubtractor(
-    input [3:0] a, b,
-    input sub,
-    output [3:0] sum,
-    output cout, v
-);
-    wire [3:0] b_sub;
-    wire [3:0] c;
-    assign b_sub = sub ? ~b : b;
-    FullAdder fa0 (.a(a[0]), .b(b_sub[0]), .cin(sub), .sum(sum[0]), .cout(c[0]));
-    FullAdder fa1 (.a(a[1]), .b(b_sub[1]), .cin(c[0]), .sum(sum[1]), .cout(c[1]));
-    FullAdder fa2 (.a(a[2]), .b(b_sub[2]), .cin(c[1]), .sum(sum[2]), .cout(c[2]));
-    FullAdder fa3 (.a(a[3]), .b(b_sub[3]), .cin(c[2]), .sum(sum[3]), .cout(cout));
-    assign v = sub ? cout : ~cout;
 endmodule

@@ -5,10 +5,14 @@
 
 module alu(
     input clk, reset_p,
-    input op_add, op_sub, op_mul, op_div, op_and, op_or, alu_lsb,
-    input [3:0] acc_high_data, bus_reg_data,
+    input op_add, op_sub, op_mul, op_div, op_and, /*op_or, */alu_lsb,
+    input [3:0] acc_high_data, 
+    input [3:0] bus_reg_data, // BREG
     output [3:0] alu_data,
-    output zero_flag, sign_flag, carry_flag, cout
+    output zero_flag, 
+    output sign_flag, 
+    output carry_flag, 
+    output cout
     // zero_flag : 연산결과가 0이면 1로 세트
     // sign_flag : 연산결과가 음쉬면 1로 세트
     // carry_flag : 연산결과가 carry가 발생하면 1로 세트
@@ -29,7 +33,7 @@ module alu(
     // and 연산
     assign alu_data = op_and ? (acc_high_data & bus_reg_data) : sum;
     // or 연산
-    assign alu_data = op_or ? (acc_high_data | bus_reg_data) : sum;
+    // assign alu_data = op_or ? (acc_high_data | bus_reg_data) : sum;
 
     // sign_flag register
     // 연산결과가 음수이면 sign_flag는 1

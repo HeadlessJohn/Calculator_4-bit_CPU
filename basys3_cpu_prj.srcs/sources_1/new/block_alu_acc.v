@@ -15,7 +15,7 @@ module block_alu_acc(
     input op_mul, 
     input op_div, 
     input op_and, 
-    input op_or,
+    // input op_or,
     input [1:0] acc_high_select_in,
     input [1:0] acc_low_select,
     input [3:0] bus_data, // 버스로부터 ACC를 거쳐 받는 데이터
@@ -69,7 +69,7 @@ module block_alu_acc(
         .op_mul        (op_mul),
         .op_div        (op_div),
         .op_and        (op_and),
-        .op_or         (op_or),
+        // .op_or         (op_or),
         .alu_lsb       (alu_lsb),
         .acc_high_data (acc_high_data),
         .bus_reg_data  (bus_reg_data),
