@@ -3,7 +3,7 @@
 
 //1us clock generator
 module clock_usec # (
-	parameter freq = 125 //Mhz
+	parameter freq = 100 //Mhz
 	)(
 	input clk, reset_p,
 	output clock_usec );
@@ -666,17 +666,4 @@ module load_count_ud_N #(
 			end
 		end
 	end
-endmodule
-
-
-module clk_set(
-    input clk, reset_p,
-    output clk_msec, clk_csec, clk_sec, clk_min);
-
-    clock_usec usec_clk(clk, reset_p, clk_usec);
-    clock_div_1000 msec_clk(clk, reset_p, clk_usec, clk_msec);
-    clock_div_10 csec_clk(clk, reset_p, clk_msec, clk_csec);
-    clock_div_1000 sec_clk(clk, reset_p, clk_msec, clk_sec);
-    clock_min min_clk(clk, reset_p, clk_sec, clk_min);
-
 endmodule

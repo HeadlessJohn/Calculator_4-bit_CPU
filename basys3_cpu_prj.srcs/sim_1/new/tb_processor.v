@@ -30,17 +30,41 @@ module tb_processor();
 
     always #5 clk = ~clk;
 
+    integer i = 0;
+    integer j = 0;
+    integer k = 0;
+
     initial begin
                                       #10;
         reset_p = 0;                  #10;
-        key_value = 3;  key_valid = 1; #10_000; // 3 press
-        key_value = 0;  key_valid = 0; #10_000; //   release
-        key_value = 10; key_valid = 1; #10_000; // + press
-        key_value = 0;  key_valid = 0; #10_000; //   release
-        key_value = 5;  key_valid = 1; #10_000; // 5 press
-        key_value = 0;  key_valid = 0; #10_000; //   release
-        key_value = 15; key_valid = 1; #10_000; // = press
-        key_value = 0;  key_valid = 0; #10_000; //   release
+        // for (k=10; k<15; k=k+1) begin
+        //     for (i=0; i<10; i=i+1) begin
+        //         for (j=0; j<10; j=j+1) begin
+                    i = 9; j = 7; k = 14;
+                    key_value = i;  key_valid = 1; #10_000; // 3 press
+                    key_value = 0;  key_valid = 0; #10_000; //   release
+                    key_value = k;  key_valid = 1; #10_000; // + press
+                    key_value = 0;  key_valid = 0; #10_000; //   release
+                    key_value = j;  key_valid = 1; #10_000; // 5 press
+                    key_value = 0;  key_valid = 0; #10_000; //   release
+                    key_value = 15; key_valid = 1; #10_000; // = press
+                    key_value = 0;  key_valid = 0; #10_000; //   release
+                    $display("%d %d %d = %d\n", i, k, j, outreg_data);
+
+                    #10_000;
+                    i = 7; j = 9; k = 14;
+                    key_value = i;  key_valid = 1; #10_000; // 3 press
+                    key_value = 0;  key_valid = 0; #10_000; //   release
+                    key_value = k;  key_valid = 1; #10_000; // + press
+                    key_value = 0;  key_valid = 0; #10_000; //   release
+                    key_value = j;  key_valid = 1; #10_000; // 5 press
+                    key_value = 0;  key_valid = 0; #10_000; //   release
+                    key_value = 15; key_valid = 1; #10_000; // = press
+                    key_value = 0;  key_valid = 0; #10_000; //   release
+                    $display("%d %d %d = %d\n", i, k, j, outreg_data);
+        //         end
+        //     end
+        // end
 
         $stop;
     end

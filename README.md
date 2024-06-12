@@ -1,7 +1,3 @@
 # 4-bit CPU
-## ALU
--
--
-## ACC
--
--
+## ALU & ACC
+- ADD, SUB, MUL, DIV, SHIFT_L, SHIFT_R, AND
